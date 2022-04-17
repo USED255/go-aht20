@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/d2r2/go-i2c"
+	"github.com/d2r2/go-logger"
 )
 
 const (
@@ -90,6 +91,7 @@ func (d *AHT20) Configure() {
 
 // Reset the AHT20
 func (d *AHT20) Reset() {
+	lg.Debug("Reset sensor...")
 	d.Tx([]byte{CMD_SOFTRESET}, nil)
 	time.Sleep(20 * time.Millisecond)
 }
@@ -159,3 +161,11 @@ func (d *AHT20) RelHumidity() float32 {
 func (d *AHT20) Celsius() float32 {
 	return (float32(d.temp*200.0) / 0x100000) - 50
 }
+
+// https://github.com/d2r2/go-bh1750/blob/master/logger.go 抄来的
+// You can manage verbosity of log output
+// in the package by changing last parameter value.
+var lg = logger.NewPackageLogger("aht20",
+	logger.DebugLevel,
+	// logger.InfoLevel,
+)
