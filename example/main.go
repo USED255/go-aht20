@@ -11,7 +11,8 @@ import (
 )
 
 func main() {
-	logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
+	//logger.ChangePackageLogLevel("i2c", logger.DebugLevel)
+	logger.ChangePackageLogLevel("aht20", logger.DebugLevel)
 	bus, err := i2c.NewI2C(0x38, 1)
 	if err != nil {
 		return
