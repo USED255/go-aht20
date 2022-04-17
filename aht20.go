@@ -1,4 +1,4 @@
-package main
+package aht20
 
 // Transplanted from github.com/tinygo-org/drivers/aht20/aht20.go
 
