@@ -4,5 +4,5 @@ github.com/d2r2/go-logger v0.0.0-20210606094344-60e9d1233e22 h1:nO+SY4KOMsF/LsZ5
 github.com/d2r2/go-logger v0.0.0-20210606094344-60e9d1233e22/go.mod h1:eSx+YfcVy5vCjRZBNIhpIpfCGFMQ6XSOSQkDk7+VCpg=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/used255/aht20-go v0.0.0-20220417081017-dcf6b5cba472 h1:DmHneNi6bHv1chl1wdlst84ruzYsr7/7LnL9xyDD2i0=
-github.com/used255/aht20-go v0.0.0-20220417081017-dcf6b5cba472/go.mod h1:OFjyGqMQlLxssmcevSIWZclCIhFF/PtMa99bwgaBk14=
+github.com/used255/aht20-go v0.1.0 h1:jENCkdfLoQS/fLBfdJYKUq0dyqMoszkNCw1rZp3u5Is=
+github.com/used255/aht20-go v0.1.0/go.mod h1:OFjyGqMQlLxssmcevSIWZclCIhFF/PtMa99bwgaBk14=
