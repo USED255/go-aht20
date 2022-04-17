@@ -80,11 +80,13 @@ func (d *AHT20) Configure() {
 	// Check initialization state
 	status := d.Status()
 	if status&0x08 == 1 {
+		lg.Debug("AHT20 is initialized")
 		// AHT20 is initialized
 		return
 	}
 
 	// Force initialization
+	lg.Debug("Initialization AHT20")
 	d.Tx([]byte{CMD_INITIALIZE, 0x08, 0x00}, nil)
 	time.Sleep(10 * time.Millisecond)
 }
@@ -137,6 +139,7 @@ func (d *AHT20) ReadWithRetry(i int) error {
 		if err == nil {
 			return nil
 		}
+		lg.Debug("Retry...")
 		if i == 0 {
 			return err
 		}
