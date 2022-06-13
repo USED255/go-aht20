@@ -1,6 +1,6 @@
 package aht20
 
-// Transplanted from github.com/tinygo-org/drivers/aht20/aht20.go
+// 移植自 https://github.com/tinygo-org/drivers/tree/release/aht20
 
 import (
 	"errors"
@@ -25,7 +25,7 @@ var (
 	ErrTimeout = errors.New("timeout")
 )
 
-// AHT20 wraps an I2C connection(github.com/d2r2/go-i2c) to an AHT20 .
+// 用于 github.com/d2r2/go-i2c 的包装
 type AHT20 struct {
 	bus      *i2c.I2C
 	humidity uint32
