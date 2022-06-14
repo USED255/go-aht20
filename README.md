@@ -18,16 +18,20 @@ import (
 func main() {
 	//logger.ChangePackageLogLevel("i2c", logger.DebugLevel)
 	logger.ChangePackageLogLevel("aht20", logger.DebugLevel)
+
 	bus, err := i2c.NewI2C(0x38, 1)
 	if err != nil {
 		log.Fatal(err)
 	}
-	aht20 := aht20.AHT20New(bus)
-	err = aht20.ReadWithRetry(3)
+
+	s := aht20.NewAHT20(bus)
+
+	err = s.Read()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("温度:", aht20.Celsius(), "摄氏度")
-	fmt.Println("相对湿度:", aht20.RelHumidity(), "%")
+
+	fmt.Println("温度:", s.Celsius(), "摄氏度")
+	fmt.Println("相对湿度:", s.RelHumidity(), "%")
 }
 ```

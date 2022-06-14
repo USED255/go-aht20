@@ -1,6 +1,8 @@
 package aht20
 
 // 移植自 https://github.com/tinygo-org/drivers/tree/release/aht20
+// 参考了 https://github.com/Chouffy/python_sensor_aht20
+// 和 https://github.com/d2r2/go-bsbmp
 
 import (
 	"errors"
@@ -25,36 +27,48 @@ var (
 	ErrTimeout = errors.New("timeout")
 )
 
-// 用于 github.com/d2r2/go-i2c 的包装
-type AHT20 struct {
+// 抄自 https://github.com/d2r2/go-bh1750/blob/master/logger.go
+// You can manage verbosity of log output
+// in the package by changing last parameter value.
+var lg = logger.NewPackageLogger("aht20",
+	logger.DebugLevel,
+	// logger.InfoLevel,
+)
+
+type Device struct {
 	bus      *i2c.I2C
 	humidity uint32
 	temp     uint32
 }
 
-func (i *AHT20) controllerTransmit(w []byte) error {
-	_, err := i.bus.WriteBytes(w)
+// 用于 https://github.com/d2r2/go-i2c 的包装
+func (d *Device) controllerTransmit(w []byte) error {
+	_, err := d.bus.WriteBytes(w)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
-func (i *AHT20) controllerReceive(r []byte) error {
-	_, err := i.bus.ReadBytes(r)
+
+func (s *Device) controllerReceive(r []byte) error {
+	_, err := s.bus.ReadBytes(r)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
-func (i *AHT20) Tx(w, r []byte) error {
+
+func (s *Device) Tx(w, r []byte) error {
 	if len(w) > 0 {
-		if err := i.controllerTransmit(w); nil != err {
+		if err := s.controllerTransmit(w); nil != err {
 			return err
 		}
 	}
 
 	if len(r) > 0 {
-		if err := i.controllerReceive(r); nil != err {
+		if err := s.controllerReceive(r); nil != err {
 			return err
 		}
 	}
@@ -62,21 +76,19 @@ func (i *AHT20) Tx(w, r []byte) error {
 	return nil
 }
 
-// New creates a new AHT20 connection. The I2C bus must already be
-// configured.
-//
-// This function only creates the AHT20 object, it does not touch the AHT20.
-func NewAHT20(bus *i2c.I2C) AHT20 {
-	aht20 := AHT20{
+func NewAHT20(bus *i2c.I2C) Device {
+	aht20 := Device{
 		bus: bus,
 	}
 	//aht20.Reset()
 	aht20.Configure()
+
 	return aht20
 }
 
+// 以下来自 https://github.com/tinygo-org/drivers/blob/release/aht20/aht20.go
 // Configure the AHT20
-func (d *AHT20) Configure() {
+func (d *Device) Configure() {
 	// Check initialization state
 	status := d.Status()
 	if status&0x08 == 1 {
@@ -92,14 +104,14 @@ func (d *AHT20) Configure() {
 }
 
 // Reset the AHT20
-func (d *AHT20) Reset() {
+func (d *Device) Reset() {
 	lg.Debug("Reset sensor...")
 	d.Tx([]byte{CMD_SOFTRESET}, nil)
 	time.Sleep(20 * time.Millisecond)
 }
 
 // Status of the AHT20
-func (d *AHT20) Status() byte {
+func (d *Device) Status() byte {
 	data := []byte{0}
 
 	d.Tx([]byte{CMD_STATUS}, data)
@@ -111,7 +123,7 @@ func (d *AHT20) Status() byte {
 //
 // The actual temperature and humidity are stored
 // and can be accessed using `Temp` and `Humidity`.
-func (d *AHT20) Read() error {
+func (d *Device) Read() error {
 	d.Tx([]byte{CMD_TRIGGER, 0x33, 0x00}, nil)
 
 	data := []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
@@ -133,42 +145,26 @@ func (d *AHT20) Read() error {
 	return ErrTimeout
 }
 
-func (d *AHT20) ReadWithRetry(i int) error {
-	err := d.Read()
-	for {
-		if err == nil {
-			return nil
-		}
-		lg.Debug("Retry...")
-		if i == 0 {
-			return err
-		}
-		err = d.Read()
-		i = i - 1
-	}
-}
-
-func (d *AHT20) RawHumidity() uint32 {
+func (d *Device) RawHumidity() uint32 {
 	return d.humidity
 }
 
-func (d *AHT20) RawTemp() uint32 {
+func (d *Device) RawTemp() uint32 {
 	return d.temp
 }
 
-func (d *AHT20) RelHumidity() float32 {
+func (d *Device) RelHumidity() float32 {
 	return (float32(d.humidity) * 100) / 0x100000
 }
 
 // Temperature in degrees celsius
-func (d *AHT20) Celsius() float32 {
+func (d *Device) Celsius() float32 {
 	return (float32(d.temp*200.0) / 0x100000) - 50
 }
 
-// https://github.com/d2r2/go-bh1750/blob/master/logger.go 抄来的
-// You can manage verbosity of log output
-// in the package by changing last parameter value.
-var lg = logger.NewPackageLogger("aht20",
-	logger.DebugLevel,
-	// logger.InfoLevel,
-)
+// Temperature in mutiples of one tenth of a degree celsius
+//
+// Using this method avoids floating point calculations.
+func (d *Device) DeciCelsius() int32 {
+	return ((int32(d.temp) * 2000) / 0x100000) - 500
+}
