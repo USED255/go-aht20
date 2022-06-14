@@ -1,4 +1,4 @@
-module github.com/used255/aht20-go
+module github.com/used255/go-aht20
 
 go 1.17
 

@@ -1,4 +1,4 @@
-# aht20-go
+# go-aht20
 
 https://github.com/tinygo-org/drivers/tree/release/aht20 的 https://github.com/d2r2/go-i2c 移植
 
@@ -12,7 +12,7 @@ import (
 	"github.com/d2r2/go-i2c"
 	logger "github.com/d2r2/go-logger"
 
-	aht20 "github.com/used255/aht20-go"
+	"github.com/used255/go-aht20"
 )
 
 func main() {
