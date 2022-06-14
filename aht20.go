@@ -66,7 +66,7 @@ func (i *AHT20) Tx(w, r []byte) error {
 // configured.
 //
 // This function only creates the AHT20 object, it does not touch the AHT20.
-func AHT20New(bus *i2c.I2C) AHT20 {
+func NewAHT20(bus *i2c.I2C) AHT20 {
 	aht20 := AHT20{
 		bus: bus,
 	}
