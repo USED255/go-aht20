@@ -2,7 +2,7 @@ package aht20
 
 // 移植自 https://github.com/tinygo-org/drivers/tree/release/aht20
 // 参考了 https://github.com/Chouffy/python_sensor_aht20
-// 和 https://github.com/d2r2/go-bsbmp
+// 和 https://github.com/d2r2/go-bh1750
 
 import (
 	"errors"
@@ -27,7 +27,8 @@ var (
 	ErrTimeout = errors.New("timeout")
 )
 
-// 抄自 https://github.com/d2r2/go-bh1750/blob/master/logger.go
+// 来自 https://github.com/d2r2/go-bh1750/blob/master/logger.go
+
 // You can manage verbosity of log output
 // in the package by changing last parameter value.
 var lg = logger.NewPackageLogger("aht20",
@@ -51,8 +52,8 @@ func (d *Device) controllerTransmit(w []byte) error {
 	return nil
 }
 
-func (s *Device) controllerReceive(r []byte) error {
-	_, err := s.bus.ReadBytes(r)
+func (d *Device) controllerReceive(r []byte) error {
+	_, err := d.bus.ReadBytes(r)
 	if err != nil {
 		return err
 	}
@@ -60,15 +61,15 @@ func (s *Device) controllerReceive(r []byte) error {
 	return nil
 }
 
-func (s *Device) Tx(w, r []byte) error {
+func (d *Device) Tx(w, r []byte) error {
 	if len(w) > 0 {
-		if err := s.controllerTransmit(w); nil != err {
+		if err := d.controllerTransmit(w); nil != err {
 			return err
 		}
 	}
 
 	if len(r) > 0 {
-		if err := s.controllerReceive(r); nil != err {
+		if err := d.controllerReceive(r); nil != err {
 			return err
 		}
 	}
@@ -87,6 +88,7 @@ func NewAHT20(bus *i2c.I2C) Device {
 }
 
 // 以下来自 https://github.com/tinygo-org/drivers/blob/release/aht20/aht20.go
+
 // Configure the AHT20
 func (d *Device) Configure() {
 	// Check initialization state
