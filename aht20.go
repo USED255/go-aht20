@@ -88,6 +88,7 @@ func NewAHT20(bus *i2c.I2C) Device {
 }
 
 // 以下来自 https://github.com/tinygo-org/drivers/blob/release/aht20/aht20.go
+// 许可: https://github.com/tinygo-org/drivers/blob/81bc1bcad1862f719556d3c7ff411c3f56b143dd/LICENSE
 
 // Configure the AHT20
 func (d *Device) Configure() {
