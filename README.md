@@ -1,6 +1,6 @@
 # go-aht20
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/used255/go-aht20)](https://goreportcard.com/report/github.com/used255/go-aht20)
+[![GoDoc](https://godoc.org/github.com/used255/go-aht20?status.svg)](https://pkg.go.dev/github.com/used255/go-aht20)
 [![MIT License](https://img.shields.io/badge/License-MIT-green)](./LICENSE)
 
 https://github.com/tinygo-org/drivers/tree/release/aht20 的 https://github.com/d2r2/go-i2c 移植
@@ -25,12 +25,14 @@ func main() {
 	//logger.ChangePackageLogLevel("i2c", logger.DebugLevel)
 	logger.ChangePackageLogLevel("aht20", logger.DebugLevel)
 
-	bus, err := i2c.NewI2C(0x38, 1)
+	bus, err := i2c.NewI2C(0x38, 0)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer i2c.Close()
 
-	s := aht20.NewAHT20(bus)
+	s := aht20.New(bus)
+	s.Configure()
 
 	err = s.Read()
 	if err != nil {
