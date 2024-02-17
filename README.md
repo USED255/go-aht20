@@ -1,6 +1,6 @@
 # go-aht20
 
-[![GoDoc](https://godoc.org/github.com/used255/go-aht20?status.svg)](https://pkg.go.dev/github.com/used255/go-aht20)
+[![GoDoc](https://pkg.go.dev/badge/github.com/used255/go-aht20)](https://pkg.go.dev/github.com/used255/go-aht20)
 [![MIT License](https://img.shields.io/badge/License-MIT-green)](./LICENSE)
 
 https://github.com/tinygo-org/drivers/tree/release/aht20 的 https://github.com/d2r2/go-i2c 移植
