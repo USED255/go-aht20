@@ -29,7 +29,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer i2c.Close()
+	defer bus.Close()
 
 	s := aht20.New(bus)
 	s.Configure()
