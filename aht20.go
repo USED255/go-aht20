@@ -69,6 +69,7 @@ func (d *Device) Read() error {
 	d.tx([]byte{CMD_TRIGGER, 0x33, 0x00}, nil)
 
 	data := []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+	lg.Debug("Reading...")
 	for retry := 0; retry < 3; retry++ {
 		time.Sleep(80 * time.Millisecond)
 		err := d.tx(nil, data)
@@ -82,6 +83,7 @@ func (d *Device) Read() error {
 			d.temp = (uint32(data[3])&0xF)<<16 | uint32(data[4])<<8 | uint32(data[5])
 			return nil
 		}
+		lg.Debug("retry...")
 	}
 
 	return ErrTimeout
