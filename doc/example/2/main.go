@@ -11,10 +11,10 @@ import (
 )
 
 func main() {
-	logger.ChangePackageLogLevel("i2c", logger.DebugLevel)
+	//logger.ChangePackageLogLevel("i2c", logger.DebugLevel)
 	logger.ChangePackageLogLevel("aht20", logger.DebugLevel)
 
-	i2c, err := i2c.NewI2C(0x38, 0)
+	i2c, err := i2c.NewI2C(0x38, 1)
 	if err != nil {
 		log.Fatal(err)
 	}
