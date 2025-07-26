@@ -57,13 +57,13 @@ func New(bus *i2c.I2C) Device {
 	}
 }
 
-// Configure the AHT20
+// Configure the device
 func (d *Device) Configure() {
 	// Check initialization state
 	status := d.Status()
-	if status&0x08 == 1 {
+	if status&STATUS_CALIBRATED == 1 {
 		lg.Debug("AHT20 is initialized")
-		// AHT20 is initialized
+		// Device is initialized
 		return
 	}
 
@@ -73,14 +73,13 @@ func (d *Device) Configure() {
 	time.Sleep(10 * time.Millisecond)
 }
 
-// Reset the AHT20
+// Reset the device
 func (d *Device) Reset() {
 	lg.Debug("Reset sensor...")
 	d.tx([]byte{CMD_SOFTRESET}, nil)
-	time.Sleep(20 * time.Millisecond)
 }
 
-// Status of the AHT20
+// Status of the device
 func (d *Device) Status() byte {
 	data := []byte{0}
 
@@ -106,7 +105,7 @@ func (d *Device) Read() error {
 		}
 
 		// If measurement complete, store values
-		if data[0]&0x04 != 0 && data[0]&0x80 == 0 {
+		if data[0]&STATUS_CALIBRATED != 0 && data[0]&STATUS_BUSY == 0 {
 			d.humidity = uint32(data[1])<<12 | uint32(data[2])<<4 | uint32(data[3])>>4
 			d.temp = (uint32(data[3])&0xF)<<16 | uint32(data[4])<<8 | uint32(data[5])
 			return nil
@@ -127,6 +126,10 @@ func (d *Device) RawTemp() uint32 {
 
 func (d *Device) RelHumidity() float32 {
 	return (float32(d.humidity) * 100) / 0x100000
+}
+
+func (d *Device) DeciRelHumidity() int32 {
+	return (int32(d.humidity) * 1000) / 0x100000
 }
 
 // Temperature in degrees celsius
