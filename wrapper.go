@@ -5,26 +5,14 @@ import (
 	"github.com/d2r2/go-logger"
 )
 
-func (d *Device) controllerTransmit(w []byte) error {
-	_, err := d.bus.WriteBytes(w)
-
-	return err
-}
-
-func (d *Device) controllerReceive(r []byte) error {
-	_, err := d.bus.ReadBytes(r)
-	
-	return err
-}
-
 func (d *Device) tx(w, r []byte) error {
 	var err error
 
 	if len(w) > 0 {
-		err = d.controllerTransmit(w)
+		_, err = d.bus.WriteBytes(w)
 	}
 	if len(r) > 0 {
-		err = d.controllerReceive(r)
+		_, err = d.bus.ReadBytes(r)
 	}
 
 	return err
