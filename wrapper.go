@@ -7,36 +7,27 @@ import (
 
 func (d *Device) controllerTransmit(w []byte) error {
 	_, err := d.bus.WriteBytes(w)
-	if err != nil {
-		return err
-	}
 
-	return nil
+	return err
 }
 
 func (d *Device) controllerReceive(r []byte) error {
 	_, err := d.bus.ReadBytes(r)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	
+	return err
 }
 
 func (d *Device) tx(w, r []byte) error {
+	var err error
+
 	if len(w) > 0 {
-		if err := d.controllerTransmit(w); nil != err {
-			return err
-		}
+		err = d.controllerTransmit(w)
 	}
-
 	if len(r) > 0 {
-		if err := d.controllerReceive(r); nil != err {
-			return err
-		}
+		err = d.controllerReceive(r)
 	}
 
-	return nil
+	return err
 }
 
 // NewAHT20 return new sensor instance.
@@ -53,6 +44,7 @@ func (d *Device) ReadRelativeHumidity() (float32, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return d.RelHumidity(), nil
 }
 
@@ -62,6 +54,7 @@ func (d *Device) ReadTemperatureC() (float32, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	return d.Celsius(), nil
 }
 
