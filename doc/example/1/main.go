@@ -24,6 +24,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("温度:", s.Celsius(), "摄氏度")
+	fmt.Println("温度:", s.Celsius(), "℃")
 	fmt.Println("相对湿度:", s.RelHumidity(), "%")
 }

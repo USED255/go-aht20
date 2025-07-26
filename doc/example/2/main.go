@@ -22,16 +22,16 @@ func main() {
 
 	sensor := aht20.NewAHT20(i2c)
 
-	celsius, err := sensor.ReadCelsius()
+	celsius, err := sensor.ReadTemperatureC()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	humidity, err := sensor.ReadRelHumidity()
+	humidity, err := sensor.ReadRelativeHumidity()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("温度:", celsius, "摄氏度")
+	fmt.Println("温度:", celsius, "℃")
 	fmt.Println("相对湿度:", humidity, "%")
 }

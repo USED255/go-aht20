@@ -39,7 +39,7 @@ func (d *Device) tx(w, r []byte) error {
 	return nil
 }
 
-// New creates a new AHT20 connection. The I2C bus must already be configured.
+// NewAHT20 return new sensor instance.
 func NewAHT20(bus *i2c.I2C) Device {
 	aht20 := New(bus)
 	//aht20.Reset()
@@ -48,7 +48,7 @@ func NewAHT20(bus *i2c.I2C) Device {
 	return aht20
 }
 
-func (d *Device) ReadRelHumidity() (float32, error) {
+func (d *Device) ReadRelativeHumidity() (float32, error) {
 	err := d.Read()
 	if err != nil {
 		return 0, err
@@ -56,7 +56,8 @@ func (d *Device) ReadRelHumidity() (float32, error) {
 	return d.RelHumidity(), nil
 }
 
-func (d *Device) ReadCelsius() (float32, error) {
+// ReadTemperatureC reads and calculates temrature in C (celsius).
+func (d *Device) ReadTemperatureC() (float32, error) {
 	err := d.Read()
 	if err != nil {
 		return 0, err
