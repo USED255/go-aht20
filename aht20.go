@@ -34,6 +34,8 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
+// 相比原代码, 添加了包装, 做了必要的修改, 添加了一些 log.
+
 import (
 	"time"
 
@@ -42,7 +44,8 @@ import (
 
 // Device wraps an I2C connection to an AHT20 device.
 type Device struct {
-	bus      *i2c.I2C
+	bus *i2c.I2C
+	// Address  uint16 // 注意, d2r2/go-i2c 需要在 i2c.NewI2C() 时传入地址.
 	humidity uint32
 	temp     uint32
 }
