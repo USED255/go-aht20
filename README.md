@@ -46,7 +46,7 @@ func main() {
 }
 ```
 
-## Credits
+## Acknowledgments
 - [AHT20 Temperature & Humidity for Python I2C](https://github.com/Chouffy/python_sensor_aht20)
 - [I2C-bus interaction of peripheral sensors with Raspberry PI embedded Linux or respective clones](https://github.com/d2r2/go-i2c)
 - [TinyGo Drivers](https://github.com/tinygo-org/drivers)
